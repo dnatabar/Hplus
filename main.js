@@ -1,3 +1,15 @@
+// ==UserScript==
+// @author      Ilirith@e-hentai.org
+// @author      FarFaraway@e-hentai.org
+// @author      GaryMcNabb@e-hentai.org
+// @description 
+// @name        H+
+// @namespace   Notyet
+// @include     http://hentaiverse.org/*
+// @version     0.0
+// @require			http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// ==/UserScript==
+
 /*======================*\
       _          
      / | |\     
@@ -8,10 +20,7 @@
 	 
  HentaiVerse+ v0.0.1
  -----------------------
- Authors: 
- Ilirith
- FarFaraway
- GaryMcNabb
+ Friendship is Magic.
 \*======================*/
 
 //=== GLOBAL VARIABLES | NEUE VARIABELEN GLOBALER ART
