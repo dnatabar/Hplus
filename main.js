@@ -23,6 +23,22 @@
 
 //=== GLOBAL VARIABLES | NEUE VARIABELEN GLOBALER ART
 
+
+var MDB_Number =[
+new MDB_Monster_Numbers(0, "Error"),
+new MDB_Monster_Numbers(1, "Slashing"),
+new MDB_Monster_Numbers(2, "Crushing"),
+new MDB_Monster_Numbers(3, "Piercing"),
+new MDB_Monster_Numbers(4, "Soul"),
+new MDB_Monster_Numbers(5, "Fire"),
+new MDB_Monster_Numbers(6, "Cold"),
+new MDB_Monster_Numbers(7, "Elec"),
+new MDB_Monster_Numbers(8, "Wind"),
+new MDB_Monster_Numbers(9, "Holy"),
+new MDB_Monster_Numbers(10, "Dark"),
+new MDB_Monster_Numbers(11, "Nothing")
+];
+
 //=== EVENT TRIGGERS
 // evResLoad(e);
 // evDomLoad();
@@ -42,7 +58,7 @@ function evResLoad( e ){
 function evDomLoad(){
 	var doc = document;
 	
-	MDB_read_scan(doc.getElementsByClassName("t3"));
+	MDB_read_scan($(".t3").get());
 	// -- Page Check Goes Here -- //
 	
 	// == Hide the Battle Log during Parsing and Redecorating.
@@ -59,7 +75,11 @@ function evDomLoad(){
 function parseBattleLog(){
 }
 
-function H_plus_settings(){
+/* functions for Variabels
+Funktionen der Array Variabelen
+*/
+
+function H_plus_settings(){ //Settings template. this will become the default settings for the script
 //Ilirith
 
 //GaryMcNabb
@@ -70,26 +90,6 @@ function H_plus_settings(){
  this.MDB_show_monster_hp_in_percent = true;
  this.MDB_save_Monster_skills = true;
  }
-
-var MDB_Number =[
-new MDB_Monster_Numbers(0, "Error"),
-new MDB_Monster_Numbers(1, "Slashing"),
-new MDB_Monster_Numbers(2, "Crushing"),
-new MDB_Monster_Numbers(3, "Piercing"),
-new MDB_Monster_Numbers(4, "Soul"),
-new MDB_Monster_Numbers(5, "Fire"),
-new MDB_Monster_Numbers(6, "Cold"),
-new MDB_Monster_Numbers(7, "Elec"),
-new MDB_Monster_Numbers(8, "Wind"),
-new MDB_Monster_Numbers(9, "Holy"),
-new MDB_Monster_Numbers(10, "Dark"),
-new MDB_Monster_Numbers(11, "Nothing")
-]
-
-/* functions for Variabels
-Funktionen der Array Variabelen
-*/
-
 // simple tamplate for the Monster DB
 function MonsterStats(Name, ID, Class, MainATK, PowerLV, Trainer, weakness, resistant, impervious){
  this.Name = Name;                     //a String
@@ -111,7 +111,8 @@ function MDB_Monster_Numbers(ID, String){
 function MDB_Monster_Numbers(ID, String){
  this.ID=ID;                           //ID
  this.Name=String;                     //Name of the Element/Atack
- } 
+ }
+  
 /*
 Save and load Data place
 */
@@ -150,6 +151,7 @@ function MDB_add_mob_stat(Name, ID, Class, MainATK, PowerLV, Trainer, weakness, 
   local("MonsterDB", MOB_BASE);
   }
  }
+ 
 /*
 Finally, the real "working" functions
 */
