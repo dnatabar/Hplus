@@ -23,7 +23,6 @@
 
 //=== GLOBAL VARIABLES | NEUE VARIABELEN GLOBALER ART
 
-
 //=== EVENT TRIGGERS
 // evResLoad(e);
 // evDomLoad();
@@ -43,6 +42,7 @@ function evResLoad( e ){
 function evDomLoad(){
 	var doc = document;
 	
+	MDB_read_scan(doc.getElementsByClassName("t3"));
 	// -- Page Check Goes Here -- //
 	
 	// == Hide the Battle Log during Parsing and Redecorating.
