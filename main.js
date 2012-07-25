@@ -1,8 +1,6 @@
 // ==UserScript==
-// @author      Ilirith@e-hentai.org
-// @author      FarFaraway@e-hentai.org
-// @author      GaryMcNabb@e-hentai.org
-// @description 
+// @author      Ilirith, GaryMcNabb, FarFaraway 
+// @description  
 // @name        H+
 // @namespace   Notyet
 // @include     http://hentaiverse.org/*
@@ -109,33 +107,54 @@ function MDB_Monster_Numbers(ID, String){
  this.ID=ID;                           //ID
  this.Name=String;                     //Name of the Element/Atack
  } 
+
+function MDB_Monster_Numbers(ID, String){
+ this.ID=ID;                           //ID
+ this.Name=String;                     //Name of the Element/Atack
+ } 
 /*
 Save and load Data place
 */
+function local(Store_Name, overwrite_with){                          //Function to save/load permanent
+ var Temp_Data = [];
+ if (overwrite_with === undefined){                                  //nothing to overwrite? Send the Data from the database
+  Temp_Data = JSON.parse(localStorage.getItem(Store_Name));
+  return Temp_Data;                                                  //will return null when nothing is stored in the DB
+	}
+ else {
+  localStorage.setItem(Store_Name, JSON.stringify(overwrite_with))
+  }
+	return true                                                        //return true (sucess at save) when there where no errors
+}
+
 
 function MDB_add_mob_stat(Name, ID, Class, MainATK, PowerLV, Trainer, weakness, resistant, impervious){
  var MOB_BASE = [];
+ var temp_Mob = new MonsterStats(Name,ID,Class, MainATK,PowerLV, Trainer, weakness, resistant, impervious);
+ var BASE_ID = 0;
+ var Schonvorhanden = false;
  if (local("MonsterDB") !== null) 
   {
    MOB_BASE = local("MonsterDB")
   }
- var Schonvorhanden = false;
- for (var i = 0, z = Equip_BASE.length; i< z; i++){
+ for (var i = 0, z = MOB_BASE.length; i< z; i++){
    if (MOB_BASE[i].ID == ID){
     Schonvorhanden = true;
+    MOB_BASE[BASE_ID]=temp_Mob;
     i=z;
+    local("MonsterDB", MOB_BASE);
     }
   } 
  if (Schonvorhanden == false){
-
-  } 
+  MOB_BASE.push(temp_Mob);
+  local("MonsterDB", MOB_BASE);
+  }
  }
 /*
 Finally, the real "working" functions
 */
 
 //FarFaraway, MDB
-MDB_read_scan($(".t3").get());
 function MDB_read_scan(TD_Element){
  var soll_ich_scannen = true;
  var zahl = 0;
@@ -163,7 +182,7 @@ function MDB_read_scan(TD_Element){
     String_TD = new XMLSerializer().serializeToString(temp_TD);
     }
    }
-  if ((String_TD.match("Scanning")) && (soll ich scannen == true)){
+  if ((String_TD.match("Scanning"))&&(soll_ich_scannen == true)){
    beginn = String_TD.indexOf("Scanning ")+9;
    ende = String_TD.indexOf("...", beginn);
    Name = String_TD.substring(beginn, ende);
@@ -177,7 +196,7 @@ function MDB_read_scan(TD_Element){
     mini_ende = Monster_Klasse.length;
     PowerLV = parseInt(Monster_Klasse.substring(mini_beginn, mini_ende));
     mini_beginn=0;
-    mini_ende = Monster_Klase.indexOf(",");
+    mini_ende = Monster_Klasse.indexOf(",");
     Monster_Klasse = Monster_Klasse.substring(mini_beginn, mini_ende);
     }
    beginn = String_TD.indexOf("Monster Trainer", ende);
@@ -238,7 +257,7 @@ function MDB_seek_String(Number){
  var String = "";
  for (var i=0, z=MDB_Number.length; i<z; i++){
   if (MDB_Number[i].ID == Number){
-   Sring = MDB_Number[i].NAME; 
+   String = MDB_Number[i].Name; 
    i=z;
    }
   }
@@ -263,4 +282,11 @@ function MDB_fetch(String){
   Numbers[0] = MDB_seek_Number(String);
   }
  return Numbers;
- }    
+ }
+function MDB_puke_String(Number_Array){ 
+ var String ="";
+ for (var i=0, z=Number_Array.length, trenner="";i<z;i++,trenner=", "){
+  String += trenner + MDB_seek_String(Number_Array[i]);
+  }
+ return String; 
+ }     
