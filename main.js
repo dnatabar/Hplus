@@ -1,18 +1,56 @@
-// ==UserScript==
-// @author      Ilirith@e-hentai.org
-// @author      FarFaraway@e-hentai.org
-// @author      GaryMcNabb@e-hentai.org
-// @description 
-// @name        H+
-// @namespace   Notyet
-// @include     http://hentaiverse.org/*
-// @version     0.0
-// @require			http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-// ==/UserScript==
+/*======================*\
+      _          
+     / | |\     
+     | |_| \_|\_  
+     |  _  |_   \
+     | | | | |_|  
+     \_| |_/ 
+	 
+ HentaiVerse+ v0.0.1
+ -----------------------
+ Ilirith@e-hentai.org
+ FarFaraway@e-hentai.org
+ GaryMcNabb@e-hentai.org
+\*======================*/
 
-/* Place new global Variables here
-Neue Variabelen globaler Art
-*/
+//=== GLOBAL VARIABLES | NEUE VARIABELEN GLOBALER ART
+
+
+//=== EVENT TRIGGERS
+// evResLoad(e);
+// evDomLoad();
+//
+// Events fire in THIS order:
+// evResLoad - Triggers loading all external resources EXCLUDING img tags.
+// evDomLoad - Triggers once the DOM has loaded and page painted.
+// evResLoad - Triggers each time an image is loaded.
+//===
+document.addEventListener( "beforeload", evResLoad, true );
+document.addEventListener( "DOMContentLoaded", evDomLoad, true );
+
+function evResLoad( e ){
+	// == Image blocking and redirecting goes here == //
+}
+
+function evDomLoad(){
+	var doc = document;
+	
+	// -- Page Check Goes Here -- //
+	
+	// == Hide the Battle Log during Parsing and Redecorating.
+	doc.styleSheets[0].insertRule( "#togpane_log {display:none;}", 0 );
+	parseBattleLog( doc.getElementById('togpane_log').innerHTML );
+	// == Show the Battle Log again.
+	doc.styleSheets[0].deleteRule(0);
+}
+
+//=== FUNCTIONS
+// Explaination Goes Here
+//===
+
+function parseBattleLog(){
+}
+
 function H_plus_settings(){
 //Ilirith
 

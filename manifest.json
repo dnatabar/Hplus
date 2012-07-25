@@ -1,0 +1,23 @@
+{
+	"name": "HentaiVerse+",
+	"version": "0.0.1",
+	"manifest_version": 2,
+	"description": "Built for top performance, collecting statistics, and improving the interface.",
+	"icons": {
+		"128": "128.png",
+		"16": "16.png",
+		"48": "48.png"
+	},
+	"content_scripts": [{
+		"js": [ "main.js" ],
+		"matches": [ "http://hentaiverse.org/*" ],
+		"run_at": "document_start"
+	}],
+	"web_accessible_resources": [
+		"img/hentaiverse.gif",
+		"img/e/channeling.gif",
+		"img/e/healthpot.gif",
+		"img/e/manapot.gif",
+		"img/e/spiritpot.gif"
+	]
+}
