@@ -8,9 +8,10 @@
 	 
  HentaiVerse+ v0.0.1
  -----------------------
- Ilirith@e-hentai.org
- FarFaraway@e-hentai.org
- GaryMcNabb@e-hentai.org
+ Authors: 
+ Ilirith
+ FarFaraway
+ GaryMcNabb
 \*======================*/
 
 //=== GLOBAL VARIABLES | NEUE VARIABELEN GLOBALER ART
