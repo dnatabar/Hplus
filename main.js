@@ -5,7 +5,7 @@
 // @namespace   Notyet
 // @include     http://hentaiverse.org/*
 // @version     0.0.1
-// @require			http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require     http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
 // ==/UserScript==
 
 /*======================*\
@@ -69,6 +69,7 @@ function evDomLoad(){
    case 13:                                                           //Crysefest
    case 16:                                                           //Random Battle
     MDB_read_scan($(".t3").get());
+    parseBattleLog();
     break;                                                            
                                                                       //Someone Finished/lose/flee...
    case 2:                                                            //Itemworld
@@ -78,6 +79,7 @@ function evDomLoad(){
    case 14:                                                           //Crysefest
    case 17:                                                           //Random Battle
     MDB_read_scan($(".t3").get());
+    parseBattleLog();
     break; 
                                                                       //Someone just visit one Battlefield, don't start a battle
    case 3:                                                            //Itemworld
@@ -102,8 +104,9 @@ function evDomLoad(){
 # (sorry, i run this script the moment i work on it to find the first logic errors)
 ##
 	doc.styleSheets[0].insertRule( "#togpane_log {display:none;}", 0 );
-	parseBattleLog( doc.getElementById('togpane_log').innerHTML );
-
+*/	
+	parseBattleLog();
+/*
 	// == Show the Battle Log again.
 	doc.styleSheets[0].deleteRule(0);
 */	
@@ -113,7 +116,30 @@ function evDomLoad(){
 // Explaination Goes Here
 //===
 
-function parseBattleLog(Some_Kind_Of_JS_Object){
+function parseBattleLog(){
+ var Battle_Data = new BATTLE_DATA();
+ var check_if_there_are_different_mobs = false;
+ var something_done = false;
+ if (local("Battle_DB") !== null){Battle_Data = local("Battle_DB");}
+ if (Battle_Data.Round_now == ( parseInt($(".t1:first").get().html)+1)){
+  Battle_Data = update_Battle_statistic(Battle_Data);
+  something_done = true;
+  }
+ else{
+  if (Battle_Data.Round_now != parseInt($(".t1:first").get().html)){
+   if ($(".t3").get().length != Battle_Data.Monster_DATA.length){
+    Battle_Data = new_Battle_statistic();
+    something_done = true;
+    }
+   else{
+    for (var i=0, z=(MDB_read_scan($(".t3").get())).length; i<z; i++){
+     check_if_there_are_different_mobs = ($(".btm3 .fd10").get().html.match(Battle_Data.Monster_DATA[i].Name)) ? check_if_there_are_different_mobs : true;
+     }
+    if (check_if_there_are_different_mobs){Battle_Data = new_Battle_statistic();something_done = true;} 
+    } 
+   }
+  } 
+ if (something_done){local("Battle_DB", Battle_Data);} 
 }
 
 /* functions for Variabels
@@ -145,17 +171,98 @@ function MonsterStats(Name, ID, Class, MainATK, PowerLV, Trainer, weakness, resi
  this.resistant = resistant;           //array of int
  this.impervious = impervious;         //array of int
  }
-
 function MDB_Monster_Numbers(ID, String){
  this.ID=ID;                           //ID
  this.Name=String;                     //Name of the Element/Atack
  } 
+//tamplate for Monstes in the Battle Database
+function BATTLE_Monster_tamplate(){
+ this.Name = "";
+ this.ID = 0;
+ this.HP = 0;
+ this.MP = 0;
+ this.SP = 0;
+} 
+//tamplate to save the battle data. 
+function BATTLE_DATA(){
+ this.Monster_DATA = [];
+ this.Round_now = 0;
+ this.Round_total = 0;
+ this.proficiency_OH = 0;
+ this.proficiency_TH = 0;
+ this.proficiency_DW = 0;
+ this.proficiency_Staff = 0;
+ this.proficiency_CA = 0;
+ this.proficiency_LA = 0;
+ this.proficiency_HA = 0;
+ this.proficiency_Elemental = 0;
+ this.proficiency_Divine = 0;
+ this.proficiency_Forbidden = 0;
+ this.proficiency_Spiritual = 0;
+ this.proficiency_Deprecating = 0;
+ this.proficiency_Supportive = 0;
+ this.proficiency_Curative = 0;
+ this.Statistic_Phsyical_Attack_total = 0;
+ this.Statistic_Phsyical_Attack_hit = 0;
+ this.Statistic_Phsyical_Attack_hit = 0;
+ this.Statistic_Phsyical_Attack_crit = 0;
+ this.Statistic_Phsyical_Overwhelming_total = 0;
+ this.Statistic_Phsyical_Overwhelming_hit = 0;
+ this.Statistic_Phsyical_Offhand_total = 0;
+ this.Statistic_Phsyical_Offhand_hit = 0;
+ this.Statistic_Phsyical_Domino_total = 0;
+ this.Statistic_Phsyical_Domino_hit = 0;
+ this.Statistic_Phsyical_Domino_2 = 0;
+ this.Statistic_Phsyical_Domino_3 = 0;
+ this.Statistic_Phsyical_Domino_4 = 0;
+ this.Statistic_Phsyical_Domino_5 = 0;
+ this.Statistic_Phsyical_Domino_6 = 0;
+ this.Statistic_Phsyical_Domino_7 = 0;
+ this.Statistic_Phsyical_Domino_8 = 0;
+ this.Statistic_Phsyical_Domino_9 = 0;
+ this.Statistic_Phsyical_Stun = 0;
+ this.Statistic_Phsyical_Penetrate = 0;
+ this.Statistic_Phsyical_Bleed = 0;
+ this.Statistic_Phsyical_dealt_deamage = 0;
+ this.Statistic_Phsyical_dealt_crit_deamage = 0;
+ this.Statistic_Phsyical_Drain_MP = 0;
+ this.Statistic_Phsyical_Drain_HP = 0;
+ this.Statistic_Phsyical_Drain_SP = 0;
+ this.Statistic_Magic_Total = 0;
+ this.Statistic_Magic_Hit = 0;
+ this.Statistic_Magic_Channeling = 0;
+ this.Statistic_Magic_Crit = 0;
+ this.Statistic_Magic_dealt_deamage = 0;
+ this.Statistic_Magic_dealt_crit_deamage = 0;
+ this.Statistic_Defence_Counter_chance = 0;
+ this.Statistic_Defence_Counter_1 = 0;
+ this.Statistic_Defence_Counter_2 = 0;
+ this.Statistic_Defence_Counter_3 = 0;
+ this.Statistic_Defence_Counter_triggered = 0;
+ this.Statistic_Defence_attacks = 0;
+ this.Statistic_Defence_hits = 0;
+ this.Statistic_Defence_hits_deamage = 0; 
+ this.Statistic_Defence_crits = 0;
+ this.Statistic_Defence_crits_deamage = 0;
+ this.Statistic_Defence_Miss = 0;
+ this.Statistic_Defence_Evade = 0;
+ this.Statistic_Defence_Block = 0;
+ this.Statistic_Defence_Parry = 0;
+ this.Statistic_Defence_Resist = 0;
+ this.Statistic_Heal_Cure_1_count = 0;
+ this.Statistic_Heal_Cure_1 = 0;
+ this.Statistic_Heal_Cure_2_count = 0;
+ this.Statistic_Heal_Cure_2 = 0;
+ this.Statistic_Heal_Cure_3_count = 0;
+ this.Statistic_Heal_Cure_3 = 0;
+ this.Statistic_Heal_Absorb_cast = 0;
+ this.Statistic_Heal_Absorb_triggered = 0;
+ this.Statistic_Heal_Absorb_cost = 0;
+ this.Statistic_Heal_Absorb_gain_mp = 0;
+ 
+    
+}
 
-function MDB_Monster_Numbers(ID, String){
- this.ID=ID;                           //ID
- this.Name=String;                     //Name of the Element/Atack
- }
-  
 /*
 Save and load Data place
 */
@@ -199,6 +306,27 @@ function MDB_add_mob_stat(Name, ID, Class, MainATK, PowerLV, Trainer, weakness, 
 Finally, the real "working" functions
 */
 
+//FarFaraway, function to update the last fight data & read the battle log
+function update_Battle_statistic(Battle_Data){
+
+ return Battle_Data;
+}
+function new_Battle_statistic(){
+ var Battle_Data = new BATTLE_DATA();
+ 
+ return Battle_Data
+}
+function new_Monster_List(){
+ var Monster_BASE = []; 
+ var temo_Mob = new BATTLE_Monster_tamplate();
+ 
+ return Monster_BASE;
+ }
+function update_Monster_List(Monster_BASE){
+ var temo_Mob = new BATTLE_Monster_tamplate();
+ 
+ return Monster_BASE;
+} 
 //FarFaraway, Functions to check the actual page
 function PAGE_Info(){                                      //This function will return NUMBERS
  var Antwort = -1;
@@ -228,7 +356,7 @@ function PAGE_Info(){                                      //This function will 
  Antwort = ((Battle_status() == 2)&&(document.location.href.match("s=Battle&ss=ba"))) ? 17 : Antwort;
  Antwort = ((Battle_status() == 0)&&(document.location.href.match("s=Battle&ss=ba"))) ? 18 : Antwort;
   
-*/ 
+ 
  return Antwort;                    
 }
 //FarFaraway, little beside function for PAGE_Info
